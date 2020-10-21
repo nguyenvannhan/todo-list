@@ -20,12 +20,18 @@ use Illuminate\Support\Facades\Route;
 //     return $request->user();
 // });
 
-Route::post('/login', [AuthController::class, 'login']);
+Route::prefix('auth')->group(function () {
+    Route::post('login', [AuthController::class, 'login']);
+    Route::get('refresh', [AuthController::class, 'refresh']);
 
-Route::middleware('auth:api')->group(function () {
-    Route::get('logout', [AuthController::class, 'logout']);
+    Route::middleware('auth:api')->group(function () {
+        Route::get('user', [AuthController::class, 'user']);
+        Route::post('logout', [AuthController::class, 'logout']);
+    });
 });
 
-Route::apiResources([
-    'tasks' => TaskController::class
-]);
+Route::middleware('auth:api')->group(function () {
+    Route::apiResources([
+        'tasks' => TaskController::class
+    ]);
+});

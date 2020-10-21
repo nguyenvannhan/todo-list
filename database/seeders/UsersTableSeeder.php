@@ -22,5 +22,11 @@ class UsersTableSeeder extends Seeder
             'name' => 'Admin',
             'role_id' => User::ROLE_ADMIN
         ]);
+
+        User::create([
+            'email' => 'user@gmail.com',
+            'password' => 'user',
+            'name' => 'User'
+        ]);
     }
 }
