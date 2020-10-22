@@ -8,6 +8,7 @@ class BusinessProvider extends ServiceProvider
 {
     public $singletons = [
         \App\Core\Businesses\Contracts\TaskInterface::class => \App\Core\Businesses\TaskBusiness::class,
+        \App\Core\Businesses\Contracts\UserInterface::class => \App\Core\Businesses\UserBusiness::class,
     ];
 
     /**

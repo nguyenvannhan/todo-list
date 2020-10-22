@@ -2,6 +2,7 @@ import Vue from "vue";
 import Vuex from "vuex";
 
 import todo from "./todo";
+import user from "./user";
 
 Vue.use(Vuex);
 
@@ -26,7 +27,8 @@ const mutations = {
 
 export default new Vuex.Store({
     modules: {
-        todo: todo
+        todo: todo,
+        user: user
     },
     state,
     mutations

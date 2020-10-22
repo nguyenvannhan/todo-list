@@ -40,6 +40,24 @@ const actions = {
 
         commit("SET_TODO_LIST", response.data);
     },
+    async getTodoItem({ commit }, id) {
+        let response = await axios.get(`/tasks/${id}`);
+
+        if (response.status === 200) {
+            return response.data.data;
+        }
+
+        return null;
+    },
+    async createTodoItem({ commit }, { data }) {
+        let response = await axios.post("/tasks", data);
+
+        if (response.status === 200 || response === 201) {
+            return true;
+        }
+
+        return false;
+    },
     async updateTodoItem({ commit }, { id, data }) {
         let response = await axios.patch(`/tasks/${id}`, data);
 

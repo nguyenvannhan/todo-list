@@ -8,6 +8,7 @@ class RepositoryProvider extends ServiceProvider
 {
     public $singletons = [
         \App\Core\Repositories\Contracts\TaskInterface::class => \App\Core\Repositories\TaskRepository::class,
+        \App\Core\Repositories\Contracts\UserInterface::class => \App\Core\Repositories\UserRepository::class,
     ];
 
     /**

@@ -13,6 +13,8 @@ import VueAxios from "vue-axios";
 import VueRouter from "vue-router";
 import VueSweetalert2 from "vue-sweetalert2";
 
+import wysiwyg from "vue-wysiwyg";
+
 window.Vue = Vue;
 
 Vue.config.performance = true;
@@ -28,6 +30,8 @@ Vue.use(VueSweetalert2);
 Vue.use(VueAxios, axios);
 axios.defaults.baseURL = `${process.env.MIX_APP_URL}/api`;
 Vue.use(VueAuth, auth);
+
+Vue.use(wysiwyg, {});
 
 new Vue({
     el: "#app",
