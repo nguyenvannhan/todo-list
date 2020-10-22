@@ -3,32 +3,50 @@
         <div class="col-12 col-md-8">
             <div class="card">
                 <div class="card-body">
-                        <h1 class="mb-4">Task Detail</h1>
+                    <h1 class="mb-4">Task Detail</h1>
 
-                        <div class="row">
-                            <div class="col-12">
-                                <div class="form-group">
-                                    <p class="font-weight-bold">{{ this.todoItem.title }}</p>
-                                </div>
-                            </div>
-                            <div class="col-12" v-if="this.todoItem.description">
-                                <div class="form-group">
-                                    <p v-html="this.todoItem.description"></p>
-                                </div>
-                            </div>
-                            <div class="col-12 col-md-6">
-                                <div class="form-group">
-                                    <label>Status: <strong>{{ this.todoItem.completed ? 'Completed' : 'Doing' }}</strong></label>
-                                </div>
-                            </div>
-
-                            <div class="col-12 col-md-6">
-                                <div class="form-group">
-                                    <label>Assigned User: <strong>{{ this.todoItem.assigned_user ? this.todoItem.assigned_user.name : '' }} </strong></label>
-                                </div>
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="form-group">
+                                <p class="font-weight-bold">
+                                    {{ this.todoItem.title }}
+                                </p>
                             </div>
                         </div>
-                    </CForm>
+                        <div class="col-12" v-if="this.todoItem.description">
+                            <div class="form-group">
+                                <p v-html="this.todoItem.description"></p>
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-6">
+                            <div class="form-group">
+                                <label
+                                    >Status:
+                                    <strong>{{
+                                        this.todoItem.completed
+                                            ? "Completed"
+                                            : "Doing"
+                                    }}</strong></label
+                                >
+                            </div>
+                        </div>
+
+                        <div class="col-12 col-md-6">
+                            <div class="form-group">
+                                <label>
+                                    Assigned User:
+                                    <strong>
+                                        {{
+                                            this.todoItem.assigned_user
+                                                ? this.todoItem.assigned_user
+                                                      .name
+                                                : ""
+                                        }}
+                                    </strong>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
