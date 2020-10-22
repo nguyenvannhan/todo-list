@@ -23,11 +23,14 @@
                             class="action d-flex align-items-center justify-content-end"
                             v-if="!todoItem.completed"
                         >
-                            <a
-                                href="#"
+                            <router-link
+                                :to="{
+                                    name: 'TaskEdit',
+                                    params: { id: todoItem.id }
+                                }"
                                 class="btn btn-outline-primary mx-1 btn-sm"
                                 v-if="user.role_id"
-                                >Edit</a
+                                >Edit</router-link
                             >
                             <a
                                 href="#"
@@ -39,6 +42,7 @@
                                 href="#"
                                 class="btn btn-outline-danger mx-1 btn-sm"
                                 v-if="user.role_id"
+                                @click.prevent="deleteTodoItem(todoItem.id)"
                                 >Delete</a
                             >
                         </div>
@@ -135,6 +139,44 @@ export default {
                     title: "Task completed"
                 });
             }
+        },
+
+        deleteTodoItem(id) {
+            let storeAction = this.$store;
+            const updateOptions = {
+                status: this.$route.params.status,
+                page: this.currentPage
+            };
+            const Swal = this.$swal;
+
+            this.$swal({
+                title: "<strong>Delete Task</strong>",
+                icon: "info",
+                html: "<span>Do you really want to delete task?</span>",
+                showCancelButton: true,
+                showConfirmButton: true,
+                showLoaderOnConfirm: true,
+                preConfirm: () => {
+                    let result = storeAction.dispatch(
+                        "todo/deleteTodoItem",
+                        id
+                    );
+
+                    if (result) {
+                        storeAction.dispatch("todo/getTodoList", updateOptions);
+
+                        Swal({
+                            icon: "success",
+                            title: "Delete Successfully!"
+                        });
+                    } else {
+                        Swal({
+                            icon: "error",
+                            title: "Delete Failed!"
+                        });
+                    }
+                }
+            });
         }
     }
 };

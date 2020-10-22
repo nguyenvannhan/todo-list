@@ -4,6 +4,9 @@ import Router from "vue-router";
 import TheContainer from "../containers/TheContainer.vue";
 import Dashboard from "../views/Dashboard.vue";
 import Login from "../views/Login.vue";
+import TaskEdit from "../components/TaskEdit.vue";
+import TaskDetail from "../components/TaskDetail.vue";
+import TaskNew from "../components/TaskNew.vue";
 
 Vue.use(Router);
 
@@ -24,6 +27,28 @@ function configRoutes() {
                 auth: undefined
             }
         },
+        {
+            path: "/tasks",
+            component: TheContainer,
+            children: [
+                {
+                    path: "edit/:id",
+                    name: "TaskEdit",
+                    component: TaskEdit
+                },
+                {
+                    path: "new",
+                    name: "TaskNew",
+                    component: TaskNew
+                },
+                {
+                    path: ":id",
+                    name: "TaskDetail",
+                    component: TaskDetail
+                }
+            ]
+        },
+
         {
             path: "/",
             name: "Home",

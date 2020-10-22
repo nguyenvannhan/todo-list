@@ -47,6 +47,14 @@ const actions = {
             return true;
         }
         return false;
+    },
+    async deleteTodoItem({ commit }, id) {
+        let response = await axios.delete(`/tasks/${id}`);
+
+        if (response.data.success) {
+            return true;
+        }
+        return false;
     }
 };
 
