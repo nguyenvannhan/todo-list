@@ -11,9 +11,14 @@
                     >
                         <div class="pr-2">
                             <div class="mb-1">
-                                <a class="text-dark title" href="#">{{
-                                    todoItem.title
-                                }}</a>
+                                <router-link
+                                    class="text-dark title"
+                                    :to="{
+                                        name: 'TaskDetail',
+                                        params: { id: todoItem.id }
+                                    }"
+                                    >{{ todoItem.title }}</router-link
+                                >
                             </div>
                             <span class="font-weight-bold">
                                 Assigned To {{ todoItem.assigned_user.name }}
@@ -123,20 +128,22 @@ export default {
                 page: page
             });
         },
-        markComplete(id) {
-            let result = this.$store.dispatch("todo/updateTodoItem", {
-                id: id,
-                data: {
-                    completed: true
-                }
+        async markComplete(id) {
+            let result = await this.$store.dispatch("todo/markComplete", {
+                id: id
             });
 
-            if (result) {
+            if (result.status === 200) {
                 this.updatePage(this.currentPage);
 
                 this.$swal({
                     icon: "success",
                     title: "Task completed"
+                });
+            } else {
+                this.$swal({
+                    icon: "error",
+                    title: "Mark task complete failed !"
                 });
             }
         },

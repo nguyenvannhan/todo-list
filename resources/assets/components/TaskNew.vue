@@ -4,13 +4,7 @@
             <div class="card">
                 <div class="card-body">
                     <CForm @submit.prevent="saveTodoItem">
-                        <h1>Edit Task</h1>
-
-                        <div class="alert alert-danger" v-if="hasError">
-                            <p>
-                                Edit Task Fail
-                            </p>
-                        </div>
+                        <h1>Create Task</h1>
 
                         <div class="row">
                             <div class="col-12">
@@ -19,7 +13,20 @@
                                         label="Title"
                                         placeholder="Enter title"
                                         v-model="todoItem.title"
+                                        :isValid="
+                                            formErrors.title ? false : null
+                                        "
                                     />
+                                    <div v-if="formErrors.title">
+                                        <span
+                                            class="text-danger"
+                                            v-for="(err,
+                                            index) in formErrors.title"
+                                            :key="index"
+                                        >
+                                            {{ err }}
+                                        </span>
+                                    </div>
                                 </div>
                             </div>
                             <div class="col-12">
@@ -28,6 +35,15 @@
                                         <wysiwyg
                                             v-model="todoItem.description"
                                         />
+                                    </div>
+                                    <div v-if="formErrors.description">
+                                        <span
+                                            class="text-danger"
+                                            v-for="(err, index) in formErrors"
+                                            :key="index"
+                                        >
+                                            {{ err }}
+                                        </span>
                                     </div>
                                 </div>
                             </div>
@@ -41,6 +57,16 @@
                                             minimumResultsForSearch: -1
                                         }"
                                     ></Select2>
+                                    <div v-if="formErrors.completed">
+                                        <span
+                                            class="text-danger"
+                                            v-for="(err,
+                                            index) in formErrors.completed"
+                                            :key="index"
+                                        >
+                                            {{ err }}
+                                        </span>
+                                    </div>
                                 </div>
                             </div>
 
@@ -51,6 +77,16 @@
                                         v-model="user_id"
                                         :options="userOptions"
                                     ></Select2>
+                                    <div v-if="formErrors.user_id">
+                                        <span
+                                            class="text-danger"
+                                            v-for="(err,
+                                            index) in formErrors.user_id"
+                                            :key="index"
+                                        >
+                                            {{ err }}
+                                        </span>
+                                    </div>
                                 </div>
                             </div>
 
@@ -106,8 +142,6 @@ export default {
     data() {
         return {
             todoItem: {},
-            loading: true,
-            hasError: false,
             completeOptions: [
                 {
                     id: false,
@@ -117,7 +151,8 @@ export default {
                     id: true,
                     text: "Completed"
                 }
-            ]
+            ],
+            formErrors: {}
         };
     },
     components: {
@@ -136,7 +171,7 @@ export default {
                 this.todoItem
             );
 
-            if (result) {
+            if (result.status === 200 || result.status === 201) {
                 let swal = this.$swal({
                     title: "Create Successfully",
                     html: "<small>The dialog will close soon!!!</small>",
@@ -154,6 +189,15 @@ export default {
 
                     router.push({ name: "Todo" });
                 }, 1500);
+            } else {
+                this.$swal({
+                    title: "Create Failed",
+                    icon: "error"
+                });
+
+                if (result.status === 422) {
+                    this.formErrors = result.messages;
+                }
             }
         }
     }

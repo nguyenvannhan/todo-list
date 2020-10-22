@@ -50,21 +50,66 @@ const actions = {
         return null;
     },
     async createTodoItem({ commit }, data) {
-        let response = await axios.post("/tasks", data);
+        try {
+            let response = await axios.post("/tasks", data);
 
-        if (response.status === 200 || response.status === 201) {
-            return true;
+            return {
+                status: response.status
+            };
+        } catch (e) {
+            if (e.response.status === 422) {
+                return {
+                    status: e.response.status,
+                    messages: e.response.data.errors
+                };
+            } else {
+                return {
+                    status: e.response.status
+                };
+            }
         }
-
-        return false;
     },
     async updateTodoItem({ commit }, { id, data }) {
-        let response = await axios.patch(`/tasks/${id}`, data);
+        try {
+            let response = await axios.patch(`/tasks/${id}`, data);
 
-        if (response.status === 200) {
-            return true;
+            return {
+                status: response.status
+            };
+        } catch (e) {
+            if (e.response.status === 422) {
+                return {
+                    status: e.response.status,
+                    messages: e.response.data.errors
+                };
+            } else {
+                return {
+                    status: e.response.status
+                };
+            }
         }
-        return false;
+    },
+    async markComplete({ commit }, { id }) {
+        try {
+            let response = await axios.patch(`/tasks/mark-complete`, {
+                id: id
+            });
+
+            return {
+                status: response.status
+            };
+        } catch (e) {
+            if (e.response.status === 422) {
+                return {
+                    status: e.response.status,
+                    messages: e.response.data.errors
+                };
+            } else {
+                return {
+                    status: e.response.status
+                };
+            }
+        }
     },
     async deleteTodoItem({ commit }, id) {
         let response = await axios.delete(`/tasks/${id}`);

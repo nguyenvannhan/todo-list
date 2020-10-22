@@ -3,6 +3,8 @@
 namespace App\Core\Repositories;
 
 use App\Core\Repositories\Contracts\TaskInterface;
+use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 
 class TaskRepository extends BaseHelper implements TaskInterface
 {
@@ -13,12 +15,20 @@ class TaskRepository extends BaseHelper implements TaskInterface
 
     public function getListByStatus($status, $options = [])
     {
+        $query = null;
+
         if (is_null($status)) {
-            return $this->getList(['*'], $options);
+            $query = $this->getModelToQuery();
         } elseif ($status == 'completed') {
-            return $this->buildQuery($this->getModelToQuery()->whereCompleted(true), $options);
+            $query = $this->getModelToQuery()->whereCompleted(true);
         } else {
-            return $this->buildQuery($this->getModelToQuery()->whereCompleted(false), $options);
+            $query = $this->getModelToQuery()->whereCompleted(false);
         }
+
+        if (Auth::user()->role_id == User::ROLE_NORMAL) {
+            $query = $query->where('user_id', Auth::id());
+        }
+
+        return $this->buildQuery($query, $options);
     }
 }

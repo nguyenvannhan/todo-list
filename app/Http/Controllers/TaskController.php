@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Core\Businesses\Contracts\TaskInterface as TaskBusiness;
-use App\Http\Requests\CreateTaskRequest;
+use App\Http\Requests\UpdateTaskRequest;
 use App\Http\Resources\Collections\TaskCollection;
 use App\Http\Resources\Resources\TaskResource;
 use Illuminate\Http\Request;
@@ -15,6 +15,8 @@ class TaskController extends Controller
     public function __construct(TaskBusiness $taskBusiness)
     {
         $this->taskBusiness = $taskBusiness;
+
+        $this->middleware('auth.role:admin')->except(['index', 'show', 'markComplete']);
     }
 
     /**
@@ -35,7 +37,7 @@ class TaskController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(CreateTaskRequest $request)
+    public function store(UpdateTaskRequest $request)
     {
         $data = $request->only(['title', 'description', 'user_id', 'completed']);
 
@@ -66,7 +68,7 @@ class TaskController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UpdateTaskRequest $request, $id)
     {
         $data = $request->only(['title', 'description', 'user_id', 'completed']);
 
@@ -90,5 +92,22 @@ class TaskController extends Controller
         return response()->json(
             $this->taskBusiness->destroy($id),
         );
+    }
+
+    public function markComplete(Request $request)
+    {
+        $request->validate([
+            'id' => 'required'
+        ]);
+
+        $result = $this->taskBusiness->update($request->id, [
+            'completed' => true,
+        ]);
+
+        if ($result['success']) {
+            return new TaskResource($result['task_item']);
+        }
+
+        return response()->json(['message' => 'Mark Complete Fail'], 500);
     }
 }

@@ -32,6 +32,8 @@ Route::prefix('auth')->group(function () {
 });
 
 Route::middleware('auth:api')->group(function () {
+    Route::patch('/tasks/mark-complete', [TaskController::class, 'markComplete']);
+
     Route::apiResources([
         'tasks' => TaskController::class
     ]);

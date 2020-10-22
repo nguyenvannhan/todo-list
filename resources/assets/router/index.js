@@ -7,6 +7,8 @@ import Login from "../views/Login.vue";
 import TaskEdit from "../components/TaskEdit.vue";
 import TaskDetail from "../components/TaskDetail.vue";
 import TaskNew from "../components/TaskNew.vue";
+import Page403 from "../views/Page403.vue";
+import Page404 from "../views/Page404.vue";
 
 Vue.use(Router);
 
@@ -34,17 +36,34 @@ function configRoutes() {
                 {
                     path: "edit/:id",
                     name: "TaskEdit",
-                    component: TaskEdit
+                    component: TaskEdit,
+                    meta: {
+                        auth: {
+                            roles: 1,
+                            redirect: { name: "login" },
+                            forbiddenRedirect: "/403"
+                        }
+                    }
                 },
                 {
                     path: "new",
                     name: "TaskNew",
-                    component: TaskNew
+                    component: TaskNew,
+                    meta: {
+                        auth: {
+                            roles: 1,
+                            redirect: { name: "login" },
+                            forbiddenRedirect: "/403"
+                        }
+                    }
                 },
                 {
                     path: ":id",
                     name: "TaskDetail",
-                    component: TaskDetail
+                    component: TaskDetail,
+                    meta: {
+                        auth: true
+                    }
                 }
             ]
         },
@@ -59,9 +78,23 @@ function configRoutes() {
             },
             children: [
                 {
+                    path: "/403",
+                    name: "403",
+                    component: Page403
+                },
+                {
+                    path: "/404",
+                    name: "404",
+                    component: Page404
+                },
+                {
                     path: ":status?",
                     name: "Todo",
                     component: Dashboard
+                },
+                {
+                    path: "*",
+                    component: Page404
                 }
             ]
         }

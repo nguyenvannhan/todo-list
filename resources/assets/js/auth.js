@@ -10,7 +10,7 @@ const config = {
     router: router,
     tokenDefaultName: "laravel-vue-spa",
     tokenStore: ["localStorage"],
-    rolesVar: "role_id",
+    rolesKey: "role_id",
     // registerData: { url: "auth/register", method: "POST", redirect: "/login" },
     loginData: {
         url: "auth/login",

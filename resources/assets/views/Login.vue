@@ -72,28 +72,21 @@ export default {
 
     methods: {
         login() {
-            var redirect = this.$auth.redirect();
-
-            this.$auth.login({
-                data: {
-                    email: this.email,
-                    password: this.password
-                },
-                success: function() {
-                    // handle redirection
-                    const redirectTo = redirect
-                        ? redirect.from.name
-                        : this.$auth.user().role === 2
-                        ? "admin.dashboard"
-                        : "dashboard";
-                    this.$router.push({ name: redirectTo });
-                },
-                error: function() {
+            this.$auth
+                .login({
+                    data: {
+                        email: this.email,
+                        password: this.password
+                    },
+                    rememberMe: true,
+                    fetchUser: true
+                })
+                .then(res => {
+                    this.$router.push({ name: "Todo" });
+                })
+                .catch(err => {
                     this.hasError = true;
-                },
-                rememberMe: true,
-                fetchUser: true
-            });
+                });
         }
     }
 };
