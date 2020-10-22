@@ -17,13 +17,11 @@ class TaskBusiness implements TaskInterface, ApiResourceInterface
 
     public function index()
     {
-        $request = Request();
-
         $options = [
             'paginate' => 10
         ];
 
-        return $this->taskRepository->getList(['*'], array_merge($options, $request->all()));
+        return $this->taskRepository->getListByStatus(Request()->status, array_merge($options, Request()->except(['status'])));
     }
 
     public function store($data)
