@@ -12,6 +12,9 @@ cd todo-list-bocasay
 
 composer install
 
+#Generate JWT Secret
+php artisan jwt:secret
+
 npm install
 
 npm run production
