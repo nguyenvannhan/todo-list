@@ -49,10 +49,10 @@ const actions = {
 
         return null;
     },
-    async createTodoItem({ commit }, { data }) {
+    async createTodoItem({ commit }, data) {
         let response = await axios.post("/tasks", data);
 
-        if (response.status === 200 || response === 201) {
+        if (response.status === 200 || response.status === 201) {
             return true;
         }
 

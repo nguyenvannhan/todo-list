@@ -137,6 +137,12 @@ export default {
         },
 
         async saveTodoItem() {
+            if (this.todoItem.completed) {
+                this.todoItem.completed = 1;
+            } else {
+                this.todoItem.completed = 0;
+            }
+
             let result = await this.$store.dispatch("todo/updateTodoItem", {
                 id: this.todoItem.id,
                 data: this.todoItem
